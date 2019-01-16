@@ -5,5 +5,21 @@ services:
 before_install:
   - docker build -t ddmishra/docker-react -f Dockerfile.dev .
 
+
 script:
   - docker run ddmishra/docker-react npm run test -- --coverage 
+
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "ddtek-docker-react"
+  env: "DdtekDockerReact-env"
+  bucket_name: "elasticbeanstalk-us-west-2-737663141720"
+  bucket_path: "ddtek-docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
+
